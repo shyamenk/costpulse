@@ -1,0 +1,38 @@
+[project]
+name = "costpulse"
+version = "0.1.0"
+description = "Slack slash command that reports AWS spend by service."
+readme = "README.md"
+requires-python = ">=3.14"
+dependencies = [
+    "boto3>=1.40",
+    "slack-bolt>=1.21",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=8.4",
+    "pyyaml>=6.0",
+    "ruff>=0.13",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/costpulse"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py314"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "B", "UP", "S", "SIM", "RUF"]
+
+[tool.ruff.lint.per-file-ignores]
+"tests/**" = ["S101", "S105", "S106"]
