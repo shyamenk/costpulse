@@ -14,3 +14,4 @@ All notable changes to this project are documented here. Format follows [Keep a 
 - Block Kit reply: top 5 services plus an "Other (N services)" row in an aligned monospace table, total equal to the sum of displayed rows, zero-spend message and data-freshness footer.
 - Slack handler on Lambda (Bolt): signature verification, channel allowlist (fail closed), usage hint, ephemeral "Fetching AWS spend…" ack and a lazy self-invocation that posts the in-channel reply via `response_url`. Secrets load from SSM once per cold start; logging capped at WARNING so request bodies never reach CloudWatch.
 - `src/requirements.txt` exported from `uv.lock` for `sam build`; CI fails if it drifts.
+- Deployed with `sam deploy` and wired as `/cost` in the test workspace; README covers deploy, usage, secret rotation and teardown.

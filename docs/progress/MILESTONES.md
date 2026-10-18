@@ -9,7 +9,7 @@ Date ranges, Cost Explorer query, Block Kit formatting, in-memory cache. Depends
 ## M3 — Slack wiring | Status: [x] Done
 Bolt handler, signature verification, channel allowlist, lazy listener, SSM config. Depends on: M2
 
-## M4 — Deploy & install | Status: [ ] Not Started
+## M4 — Deploy & install | Status: [x] Done
 `sam deploy`, slash command Request URL, live test in StackLab `#cloud-cost`. Depends on: M3
 
 ## M5 — Ship it | Status: [ ] Not Started
