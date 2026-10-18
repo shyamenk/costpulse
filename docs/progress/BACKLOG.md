@@ -35,17 +35,17 @@ Test names map 1:1 to acceptance criteria. FR/NFR IDs refer to `docs/PRD.md`.
 **What:** Turn `today|week|month` into UTC Cost Explorer date ranges with display labels.
 
 **Acceptance Criteria:**
-- [ ] Test: no argument resolves to month (FR1)
-- [ ] Test: `today` is today 00:00 UTC to tomorrow, exclusive end (FR2)
-- [ ] Test: `week` covers the last 7 UTC days including today (FR3)
-- [ ] Test: `month` starts on the 1st of the current UTC month (FR4)
-- [ ] Test: `month` on the 1st resolves to the full previous month, labelled as such (FR4)
-- [ ] Test: arguments are trimmed and case-insensitive (FR5)
-- [ ] Test: unknown argument raises a usage error (FR5)
+- [x] Test: no argument resolves to month (FR1)
+- [x] Test: `today` is today 00:00 UTC to tomorrow, exclusive end (FR2)
+- [x] Test: `week` covers the last 7 UTC days including today (FR3)
+- [x] Test: `month` starts on the 1st of the current UTC month (FR4)
+- [x] Test: `month` on the 1st resolves to the full previous month, labelled as such (FR4)
+- [x] Test: arguments are trimmed and case-insensitive (FR5)
+- [x] Test: unknown argument raises a usage error (FR5)
 
 **Subtasks:**
-- [ ] S1: `parse_range(text, now)` returning start, end, label — depends on: none
-- [ ] S2: frozen-clock tests incl. month and year boundaries — depends on: S1
+- [x] S1: `parse_range(text, now)` returning start, end, label — depends on: none
+- [x] S2: frozen-clock tests incl. month and year boundaries — depends on: S1
 
 ---
 

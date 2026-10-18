@@ -168,7 +168,8 @@ SSM Parameter Store ── signing secret + bot token (read at cold start)
 costpulse/
   src/costpulse/
     app.py          # Bolt app + Lambda handler
-    costs.py        # date ranges + Cost Explorer query + cache
+    ranges.py       # /cost argument -> UTC date range + label
+    costs.py        # Cost Explorer query + cache
     blocks.py       # Block Kit formatting
     config.py       # SSM + env loading
   tests/            # unit tests (pytest), named after acceptance criteria
