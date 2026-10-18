@@ -144,6 +144,27 @@ Test names map 1:1 to acceptance criteria. FR/NFR IDs refer to `docs/PRD.md`.
 
 ---
 
+### T8 · feat/14-cost-guardrails · Priority: High · Depends on: T6
+
+**What:** Cap the cost of misuse: an account budget alert, an invocation-spike alarm, and a documented kill switch.
+
+**Acceptance Criteria:**
+- [x] Test: `AlertEmail` parameter is required (no default) and feeds an SNS email subscription — `test_alert_email_is_required_and_feeds_sns_email_subscription`
+- [x] Test: alarm fires on more than 1,000 `AWS/Lambda` `Invocations` of `costpulse` in 5 minutes, treats missing data as not breaching, and notifies the SNS topic — `test_alarm_fires_on_over_1000_invocations_in_5_minutes_and_notifies_topic`
+- [x] Test: monthly COST budget defaults to $5 and emails on actual spend over 80% and forecast over 100% — `test_monthly_budget_defaults_to_5_usd_and_emails_on_80_actual_and_100_forecast`
+- [x] Test: IAM role is unchanged (existing least-privilege tests still pass)
+- [x] Deployed (`UPDATE_COMPLETE`); alarm, budget and SNS subscription exist
+- [x] Kill switch verified live: URL returns 429 with reserved concurrency 0 and 401 again after removing it
+- [x] README documents guardrails and the kill switch
+
+**Subtasks:**
+- [x] S1: template resources + parameters — depends on: none
+- [x] S2: template tests — depends on: S1
+- [x] S3: deploy + live kill-switch check — depends on: S2
+- [x] S4: README — depends on: S3
+
+---
+
 ## M5 — Ship it
 
 ### T7 · docs/7-ship-handshake · Priority: Medium · Depends on: T6

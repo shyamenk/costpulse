@@ -15,3 +15,4 @@ All notable changes to this project are documented here. Format follows [Keep a 
 - Slack handler on Lambda (Bolt): signature verification, channel allowlist (fail closed), usage hint, ephemeral "Fetching AWS spend…" ack and a lazy self-invocation that posts the in-channel reply via `response_url`. Secrets load from SSM once per cold start; logging capped at WARNING so request bodies never reach CloudWatch.
 - `src/requirements.txt` exported from `uv.lock` for `sam build`; CI fails if it drifts.
 - Deployed with `sam deploy` and wired as `/cost` in the test workspace; README covers deploy, usage, secret rotation and teardown.
+- Cost guardrails: $5 monthly account budget with email alerts (80% actual, 100% forecast), CloudWatch alarm on more than 1,000 invocations in 5 minutes via SNS email, and a documented kill switch (reserved concurrency 0).

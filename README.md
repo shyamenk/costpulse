@@ -36,6 +36,8 @@ uv export --no-dev --no-hashes --no-emit-project --no-header -q -o src/requireme
 | `/costpulse/slack-signing-secret` | SSM Parameter Store, `SecureString` | Verifies requests come from Slack |
 | `/costpulse/slack-bot-token` | SSM Parameter Store, `SecureString` | Bot token from the Slack app install |
 | `AllowedChannelIds` | SAM parameter (`samconfig.toml`) → `ALLOWED_CHANNEL_IDS` | Comma-separated channel IDs where `/cost` works. Empty rejects everything |
+| `AlertEmail` | SAM parameter (`samconfig.toml`), required | Receives the budget and invocation-spike alerts |
+| `MonthlyBudgetUsd` | SAM parameter, default `5` | Account-wide monthly budget in USD |
 
 Store a secret without it appearing in shell history:
 
@@ -78,6 +80,34 @@ read -rs SLACK_VALUE && aws ssm put-parameter --region us-east-1 --overwrite \
 aws lambda update-function-configuration --region us-east-1 --function-name costpulse \
   --description "secrets rotated $(date -u +%F)"
 ```
+
+### Cost guardrails
+
+The Function URL has no rate limiting of its own (unsigned requests get a 401 in ~2 ms, but Lambda still bills each one), so the stack adds:
+
+| Guardrail | Fires when | Goes to |
+|---|---|---|
+| `costpulse-account-monthly` budget (`MonthlyBudgetUsd`, default $5) | Actual account spend passes 80%, or forecast passes 100% | `AlertEmail` |
+| `costpulse-invocation-spike` CloudWatch alarm | More than 1,000 invocations in 5 minutes | `costpulse-alerts` SNS topic → `AlertEmail` |
+
+AWS emails a confirmation link for the SNS subscription after the first deploy; click it or the alarm can't reach you.
+
+### Kill switch
+
+Stops every invocation immediately. Lambda answers `429` without running the function, and throttled requests are not billed:
+
+```sh
+aws lambda put-function-concurrency --region us-east-1 --function-name costpulse \
+  --reserved-concurrent-executions 0
+```
+
+Turn it back on:
+
+```sh
+aws lambda delete-function-concurrency --region us-east-1 --function-name costpulse
+```
+
+`sam deploy` does not reset this setting, because the template doesn't manage reserved concurrency.
 
 ### Tear down
 
