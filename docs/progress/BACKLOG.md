@@ -75,16 +75,19 @@ Test names map 1:1 to acceptance criteria. FR/NFR IDs refer to `docs/PRD.md`.
 **What:** Format costs as the Block Kit message in PRD §3.
 
 **Acceptance Criteria:**
-- [ ] Test: top 5 services sorted by cost, descending (FR7)
-- [ ] Test: remaining services summed into "Other (N services)" (FR7)
-- [ ] Test: fewer than 5 services shows no "Other" row (FR7)
-- [ ] Test: amounts are USD with 2 decimals and the total equals the sum of displayed rows (FR8)
-- [ ] Test: zero spend shows `$0.00` and "No spend recorded for this period"
-- [ ] Test: footer mentions Cost Explorer delay and cache
+- [x] Test: top 5 services sorted by cost, descending (FR7)
+- [x] Test: remaining services summed into "Other (N services)" (FR7)
+- [x] Test: a single leftover service uses the singular "service"
+- [x] Test: fewer than 5 services shows no "Other" row (FR7)
+- [x] Test: amounts are USD with 2 decimals and the total equals the sum of displayed rows (FR8)
+- [x] Test: zero spend shows `$0.00` and "No spend recorded for this period"
+- [x] Test: footer mentions Cost Explorer delay and cache
+- [x] Test: header shows the range label and the notification fallback text includes the total
+- [x] Test: long service names are truncated and columns align
 
 **Subtasks:**
-- [ ] S1: `build_blocks(label, costs)` — depends on: none
-- [ ] S2: tests — depends on: S1
+- [x] S1: `build_message(label, costs)` — depends on: none
+- [x] S2: tests — depends on: S1
 
 ---
 
