@@ -4,7 +4,7 @@ A Slack app that answers `/cost` with your AWS spend for today, the last 7 days 
 
 It runs as a single AWS Lambda behind a Function URL and holds exactly one Slack scope (`commands`) and one AWS data permission (`ce:GetCostAndUsage`). Requirements and design decisions are in [`docs/PRD.md`](docs/PRD.md).
 
-> Status: in development (M1 — foundation). See [`docs/progress/MILESTONES.md`](docs/progress/MILESTONES.md).
+> Status: in development (M3 — Slack wiring done, deploy next). See [`docs/progress/MILESTONES.md`](docs/progress/MILESTONES.md).
 
 ## Requirements
 
@@ -20,6 +20,13 @@ uv run ruff check
 uv run ruff format --check
 uv run pytest
 sam validate --lint
+sam build
+```
+
+After changing dependencies, regenerate the Lambda requirements file that `sam build` installs (CI fails if it is stale):
+
+```sh
+uv export --no-dev --no-hashes --no-emit-project --no-header -q -o src/requirements.txt
 ```
 
 ## Configuration

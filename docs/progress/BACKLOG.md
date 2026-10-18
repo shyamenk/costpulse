@@ -98,24 +98,26 @@ Test names map 1:1 to acceptance criteria. FR/NFR IDs refer to `docs/PRD.md`.
 **What:** Bolt app on Lambda with signature verification, channel allowlist, lazy listener and SSM-loaded secrets.
 
 **Acceptance Criteria:**
-- [ ] Test: request with a bad signature returns 401 and makes no AWS call (NFR1)
-- [ ] Test: request with a timestamp older than 5 minutes returns 401 (NFR1)
-- [ ] Test: command from a channel not in `ALLOWED_CHANNEL_IDS` gets the ephemeral channel hint and makes no AWS call (FR10)
-- [ ] Test: DM channel is rejected (FR10)
-- [ ] Test: empty or unset `ALLOWED_CHANNEL_IDS` rejects every command (FR11)
-- [ ] Test: unknown argument gets the ephemeral usage hint (FR5)
-- [ ] Test: valid command acks with ephemeral "Fetching AWS spend…" (NFR5)
-- [ ] Test: lazy listener posts `response_type: in_channel` blocks to `response_url` (FR9)
-- [ ] Test: Cost Explorer failure posts the ephemeral error, no stack trace (FR13)
-- [ ] Test: secrets are read from SSM once per cold start (NFR4)
-- [ ] Test: logs never contain the token, signing secret or raw body (NFR8)
+- [x] Test: request with a bad signature returns 401 and makes no AWS call (NFR1)
+- [x] Test: request with a timestamp older than 5 minutes returns 401 (NFR1)
+- [x] Test: command from a channel not in `ALLOWED_CHANNEL_IDS` gets the ephemeral channel hint and makes no AWS call (FR10)
+- [x] Test: DM channel is rejected (FR10)
+- [x] Test: empty or unset `ALLOWED_CHANNEL_IDS` rejects every command (FR11)
+- [x] Test: unknown argument gets the ephemeral usage hint (FR5)
+- [x] Test: valid command acks with ephemeral "Fetching AWS spend…" (NFR5)
+- [x] Test: lazy listener posts `response_type: in_channel` blocks to `response_url` (FR9)
+- [x] Test: Cost Explorer failure posts the ephemeral error, no stack trace (FR13)
+- [x] Test: secrets are read from SSM once per cold start (NFR4)
+- [x] Test: `load_config` reads both secrets from SSM with decryption and trims the channel list
+- [x] Test: a missing allowlist env var means no allowed channels (FR11)
+- [x] Test: logs never contain the token, signing secret or raw body (NFR8)
 
 **Subtasks:**
-- [ ] S1: `config.py` loading SSM + env — depends on: none
-- [ ] S2: `app.py` Bolt app, `process_before_response=True`, lazy listener, `handler` — depends on: S1
-- [ ] S3: signed-request test helper — depends on: none
-- [ ] S4: handler tests — depends on: S2, S3
-- [ ] S5: `src/requirements.txt` exported from `uv.lock` for `sam build` — depends on: S2
+- [x] S1: `config.py` loading SSM + env — depends on: none
+- [x] S2: `app.py` Bolt app, `process_before_response=True`, lazy listener, `handler` — depends on: S1
+- [x] S3: signed-request test helper — depends on: none
+- [x] S4: handler tests — depends on: S2, S3
+- [x] S5: `src/requirements.txt` exported from `uv.lock` for `sam build` — depends on: S2
 
 ---
 
