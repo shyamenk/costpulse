@@ -54,17 +54,19 @@ Test names map 1:1 to acceptance criteria. FR/NFR IDs refer to `docs/PRD.md`.
 **What:** Fetch spend grouped by service for a range, excluding credits and refunds, with a 1-hour in-memory cache.
 
 **Acceptance Criteria:**
-- [ ] Test: request uses `UnblendedCost`, `GroupBy SERVICE`, and excludes `RECORD_TYPE` Credit and Refund (FR6)
-- [ ] Test: paginated responses (`NextPageToken`) are summed across pages
-- [ ] Test: multi-day results are summed per service
-- [ ] Test: second call for the same range within 1 hour makes no AWS call (FR12)
-- [ ] Test: call after 1 hour hits AWS again (FR12)
-- [ ] Test: Cost Explorer `ClientError` raises a `CostUnavailable` error (FR13)
+- [x] Test: request uses `UnblendedCost`, `GroupBy SERVICE`, and excludes `RECORD_TYPE` Credit and Refund (FR6)
+- [x] Test: paginated responses (`NextPageToken`) are summed across pages
+- [x] Test: multi-day results are summed per service and sorted highest first
+- [x] Test: zero-cost services are dropped
+- [x] Test: second call for the same range within 1 hour makes no AWS call (FR12)
+- [x] Test: call after 1 hour hits AWS again (FR12)
+- [x] Test: Cost Explorer `ClientError` raises a `CostUnavailable` error (FR13)
+- [x] Test: failures are not cached
 
 **Subtasks:**
-- [ ] S1: `get_costs(range)` using boto3 `ce` client in `us-east-1` — depends on: none
-- [ ] S2: TTL cache keyed by range — depends on: S1
-- [ ] S3: Stubber-based tests — depends on: S1, S2
+- [x] S1: `get_costs(range)` using boto3 `ce` client in `us-east-1` — depends on: none
+- [x] S2: TTL cache keyed by range — depends on: S1
+- [x] S3: Stubber-based tests — depends on: S1, S2
 
 ---
 
