@@ -10,3 +10,4 @@ All notable changes to this project are documented here. Format follows [Keep a 
 - Tests asserting the IAM role grants only the actions listed in the PRD (NFR3, NFR4, NFR8).
 - PRD, milestones and backlog.
 - `/cost` argument parsing: `today`, `week` (last 7 days) and `month` (month to date, or the full previous month on the 1st) as UTC date ranges with display labels.
+- Cost Explorer query: `UnblendedCost` per service, credits and refunds excluded, paginated, cached in memory for 1 hour; failures raise `CostUnavailable` and are not cached.
