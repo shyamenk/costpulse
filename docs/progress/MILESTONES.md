@@ -10,7 +10,7 @@ Date ranges, Cost Explorer query, Block Kit formatting, in-memory cache. Depends
 Bolt handler, signature verification, channel allowlist, lazy listener, SSM config. Depends on: M2
 
 ## M4 — Deploy & install | Status: [x] Done
-`sam deploy`, slash command Request URL, live test in StackLab `#cloud-cost`. Depends on: M3
+`sam deploy`, slash command Request URL, live test in StackLab `#cloud-cost`, cost guardrails (budget, invocation alarm, kill switch). Depends on: M3
 
 ## M5 — Ship it | Status: [ ] Not Started
 Icon, README polish, secret rotation, screenshot, Handshake submission, LinkedIn write-up. Depends on: M4

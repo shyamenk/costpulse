@@ -106,7 +106,7 @@ Data from Cost Explorer · up to ~24h delay · cached 1h
 | NFR4 | **Secrets.** Signing secret and bot token live in SSM `SecureString` (`/costpulse/slack-signing-secret`, `/costpulse/slack-bot-token`), read once per cold start. Never in git, template, environment variables or logs. |
 | NFR5 | **Latency.** Slack receives the acknowledgement in under 3 seconds, including cold starts. |
 | NFR6 | **Cost.** Steady-state AWS cost under $1/month: Lambda free tier, free Function URL, free SSM standard parameters, Cost Explorer $0.01/call bounded by the 1-hour cache. |
-| NFR7 | **Abuse cap.** Unsigned requests are rejected before any AWS call. Reserved concurrency is not set: the account limit is 10 concurrent executions and AWS requires all 10 to stay unreserved, which also caps concurrency account-wide. Revisit after a quota increase. |
+| NFR7 | **Abuse cap.** Unsigned requests are rejected before any AWS call. Reserved concurrency is not set: the account limit is 10 concurrent executions and AWS requires all 10 to stay unreserved, which also caps concurrency account-wide. A monthly account budget (default $5) and an alarm on more than 1,000 invocations in 5 minutes email `AlertEmail`; setting reserved concurrency to 0 is the kill switch. |
 | NFR8 | **Logging.** CloudWatch retention 14 days. Logs never contain the token, signing secret or raw request bodies. |
 | NFR9 | **Reproducibility.** All AWS resources defined in `template.yaml`; `sam deploy` creates them and `sam delete` removes them. |
 

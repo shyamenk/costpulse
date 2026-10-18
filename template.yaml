@@ -7,6 +7,15 @@ Parameters:
     Type: String
     Description: Comma-separated Slack channel IDs where /cost is allowed. Empty rejects everything.
     Default: ""
+  AlertEmail:
+    Type: String
+    Description: Email that receives the budget alert and the invocation-spike alarm.
+    AllowedPattern: "^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$"
+  MonthlyBudgetUsd:
+    Type: Number
+    Description: Account-wide monthly cost budget in USD.
+    Default: 5
+    MinValue: 1
 
 Resources:
   CostPulseFunction:
@@ -74,6 +83,61 @@ Resources:
                   - logs:CreateLogStream
                   - logs:PutLogEvents
                 Resource: !Sub arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/costpulse:*
+
+  AlertTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: costpulse-alerts
+      Subscription:
+        - Protocol: email
+          Endpoint: !Ref AlertEmail
+
+  # The Function URL has no rate limiting; this flags a flood within minutes.
+  InvocationSpikeAlarm:
+    Type: AWS::CloudWatch::Alarm
+    Properties:
+      AlarmName: costpulse-invocation-spike
+      AlarmDescription: More than 1,000 CostPulse invocations in 5 minutes. Kill switch is in the README.
+      Namespace: AWS/Lambda
+      MetricName: Invocations
+      Dimensions:
+        - Name: FunctionName
+          Value: !Ref CostPulseFunction
+      Statistic: Sum
+      Period: 300
+      EvaluationPeriods: 1
+      Threshold: 1000
+      ComparisonOperator: GreaterThanThreshold
+      TreatMissingData: notBreaching
+      AlarmActions: [!Ref AlertTopic]
+
+  MonthlyCostBudget:
+    Type: AWS::Budgets::Budget
+    Properties:
+      Budget:
+        BudgetName: costpulse-account-monthly
+        BudgetType: COST
+        TimeUnit: MONTHLY
+        BudgetLimit:
+          Amount: !Ref MonthlyBudgetUsd
+          Unit: USD
+      NotificationsWithSubscribers:
+        - Notification:
+            NotificationType: ACTUAL
+            ComparisonOperator: GREATER_THAN
+            Threshold: 80
+            ThresholdType: PERCENTAGE
+          Subscribers:
+            - SubscriptionType: EMAIL
+              Address: !Ref AlertEmail
+        - Notification:
+            NotificationType: FORECASTED
+            ComparisonOperator: GREATER_THAN
+            Threshold: 100
+            ThresholdType: PERCENTAGE
+          Subscribers:
+            - SubscriptionType: EMAIL
+              Address: !Ref AlertEmail
 
 Outputs:
   RequestUrl:

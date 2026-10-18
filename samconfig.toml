@@ -11,4 +11,4 @@ cached = true
 capabilities = "CAPABILITY_IAM"
 confirm_changeset = true
 resolve_s3 = true
-parameter_overrides = "AllowedChannelIds=\"C0CAY1B83Q8\""
+parameter_overrides = "AllowedChannelIds=\"C0CAY1B83Q8\" AlertEmail=\"shyamenk@gmail.com\""
