@@ -1,0 +1,81 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: AWS::Serverless-2016-10-31
+Description: CostPulse - /cost Slack slash command reporting AWS spend by service.
+
+Parameters:
+  AllowedChannelIds:
+    Type: String
+    Description: Comma-separated Slack channel IDs where /cost is allowed. Empty rejects everything.
+    Default: ""
+
+Resources:
+  CostPulseFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: costpulse
+      CodeUri: src/
+      Handler: costpulse.app.handler
+      Runtime: python3.14
+      Architectures: [arm64]
+      MemorySize: 256
+      Timeout: 30
+      Role: !GetAtt CostPulseRole.Arn
+      LoggingConfig:
+        LogGroup: !Ref CostPulseLogGroup
+      Environment:
+        Variables:
+          ALLOWED_CHANNEL_IDS: !Ref AllowedChannelIds
+          SIGNING_SECRET_PARAM: /costpulse/slack-signing-secret
+          BOT_TOKEN_PARAM: /costpulse/slack-bot-token
+      FunctionUrlConfig:
+        AuthType: NONE
+
+  CostPulseLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: /aws/lambda/costpulse
+      RetentionInDays: 14
+
+  # Explicit role instead of SAM policy templates, so AWSLambdaBasicExecutionRole
+  # (logs on every log group) is never attached.
+  CostPulseRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: "2012-10-17"
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action: sts:AssumeRole
+      Policies:
+        - PolicyName: costpulse-least-privilege
+          PolicyDocument:
+            Version: "2012-10-17"
+            Statement:
+              - Sid: ReadCosts
+                Effect: Allow
+                Action: ce:GetCostAndUsage
+                # Cost Explorer does not support resource-level permissions.
+                Resource: "*"
+              - Sid: ReadSlackSecrets
+                Effect: Allow
+                Action: ssm:GetParameter
+                Resource:
+                  - !Sub arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/costpulse/slack-signing-secret
+                  - !Sub arn:aws:ssm:${AWS::Region}:${AWS::AccountId}:parameter/costpulse/slack-bot-token
+              - Sid: LazyListenerSelfInvoke
+                Effect: Allow
+                Action: lambda:InvokeFunction
+                Resource: !Sub arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:costpulse
+              - Sid: WriteOwnLogs
+                Effect: Allow
+                Action:
+                  - logs:CreateLogStream
+                  - logs:PutLogEvents
+                Resource: !Sub arn:aws:logs:${AWS::Region}:${AWS::AccountId}:log-group:/aws/lambda/costpulse:*
+
+Outputs:
+  RequestUrl:
+    Description: Paste into the Slack app's /cost slash command Request URL.
+    Value: !GetAtt CostPulseFunctionUrl.FunctionUrl
