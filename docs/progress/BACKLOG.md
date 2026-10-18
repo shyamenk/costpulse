@@ -128,19 +128,19 @@ Test names map 1:1 to acceptance criteria. FR/NFR IDs refer to `docs/PRD.md`.
 **What:** Deploy to the personal AWS account and wire `/cost` in StackLab.
 
 **Acceptance Criteria:**
-- [ ] `sam build` and `sam deploy` succeed; stack outputs `RequestUrl`
-- [ ] Unsigned `curl` to the Function URL returns 401
-- [ ] `/cost` slash command created with the Request URL, hint `[today|week|month]`
-- [ ] App reinstalled; still only the `commands` scope
-- [ ] `/cost`, `/cost today`, `/cost week` post correct in-channel replies in `#cloud-cost`
-- [ ] `/cost` outside `#cloud-cost` gets the ephemeral channel hint
-- [ ] README documents deploy, parameters, SSM setup and `sam delete` teardown
+- [x] `sam build` and `sam deploy` succeed; stack outputs `RequestUrl`
+- [x] Unsigned `curl` to the Function URL returns 401
+- [x] `/cost` slash command created with the Request URL, hint `[today|week|month]`
+- [x] App reinstalled; still only the `commands` scope
+- [x] `/cost`, `/cost today`, `/cost week` post correct in-channel replies in `#cloud-cost`
+- [x] `/cost` outside `#cloud-cost` gets the ephemeral channel hint
+- [x] README documents deploy, parameters, SSM setup and `sam delete` teardown
 
 **Subtasks:**
-- [ ] S1: `sam build` + `sam deploy` — depends on: none
-- [ ] S2: Slack slash command config + reinstall — depends on: S1
-- [ ] S3: live test matrix — depends on: S2
-- [ ] S4: README — depends on: S3
+- [x] S1: `sam build` + `sam deploy` — depends on: none
+- [x] S2: Slack slash command config + reinstall — depends on: S1
+- [x] S3: live test matrix — depends on: S2
+- [x] S4: README — depends on: S3
 
 ---
 
