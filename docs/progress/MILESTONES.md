@@ -3,7 +3,7 @@
 ## M1 — Foundation | Status: [x] Done
 Repo, uv project, ruff + pytest, CI, PR template, SAM template with least-privilege IAM. Depends on: none
 
-## M2 — Core command | Status: [ ] Not Started
+## M2 — Core command | Status: [x] Done
 Date ranges, Cost Explorer query, Block Kit formatting, in-memory cache. Depends on: M1
 
 ## M3 — Slack wiring | Status: [ ] Not Started
