@@ -6,7 +6,7 @@ Repo, uv project, ruff + pytest, CI, PR template, SAM template with least-privil
 ## M2 — Core command | Status: [x] Done
 Date ranges, Cost Explorer query, Block Kit formatting, in-memory cache. Depends on: M1
 
-## M3 — Slack wiring | Status: [ ] Not Started
+## M3 — Slack wiring | Status: [x] Done
 Bolt handler, signature verification, channel allowlist, lazy listener, SSM config. Depends on: M2
 
 ## M4 — Deploy & install | Status: [ ] Not Started

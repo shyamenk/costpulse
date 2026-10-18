@@ -20,3 +20,5 @@ jobs:
       - run: uv run ruff check
       - run: uv run ruff format --check
       - run: uv run pytest
+      - name: Lambda requirements match uv.lock
+        run: uv export --no-dev --no-hashes --no-emit-project --no-header -q | diff - src/requirements.txt

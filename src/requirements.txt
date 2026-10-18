@@ -1,0 +1,22 @@
+boto3==1.43.114
+    # via costpulse
+botocore==1.43.114
+    # via
+    #   boto3
+    #   s3transfer
+jmespath==1.1.0
+    # via
+    #   boto3
+    #   botocore
+python-dateutil==2.9.0.post0
+    # via botocore
+s3transfer==0.19.2
+    # via boto3
+six==1.17.0
+    # via python-dateutil
+slack-bolt==1.30.0
+    # via costpulse
+slack-sdk==3.45.0
+    # via slack-bolt
+urllib3==2.8.0
+    # via botocore
